@@ -1,35 +1,19 @@
-from django.contrib import admin
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-
-from inventory.views import (
-    ItemViewSet,
-    StockHistoryViewSet,
-    CategoryViewSet,
-    SupplierViewSet
+from django.urls import path
+from .views import (
+    ItemListCreateView,
+    ItemDetailView,
+    LowStockView,
+    CategoryFilterView,
+    StockHistoryListView,
+    StockHistoryCreateView
 )
-
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView
-)
-
-# --------------------------------
-# CREATE ROUTER BEFORE REGISTERING
-# --------------------------------
-router = DefaultRouter()
-router.register(r'items', ItemViewSet, basename='item')
-router.register(r'history', StockHistoryViewSet, basename='history')
-router.register(r'categories', CategoryViewSet, basename='category')
-router.register(r'suppliers', SupplierViewSet, basename='supplier')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("items/", ItemListCreateView.as_view()),
+    path("items/<int:pk>/", ItemDetailView.as_view()),
+    path("items/low-stock/", LowStockView.as_view()),
+    path("items/category/<str:category>/", CategoryFilterView.as_view()),
 
-    # JWT Authentication
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
-    # API Routes
-    path('api/', include(router.urls)),
+    path("items/<int:item_id>/history/", StockHistoryListView.as_view()),
+    path("items/<int:item_id>/history/add/", StockHistoryCreateView.as_view()),
 ]

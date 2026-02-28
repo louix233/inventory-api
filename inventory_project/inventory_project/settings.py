@@ -9,7 +9,7 @@ SECRET_KEY = "replace-this-with-a-secure-key"
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['louix.pythonanywhere.com']
 
 
 
